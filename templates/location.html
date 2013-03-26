@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="span5 offset2">
+    <h1>{{ location.name }}</h1>
+    <p>All about this location</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Location ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ location.id }}</td>
+          <td>{{ location.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+

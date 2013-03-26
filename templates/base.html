@@ -4,17 +4,16 @@
         <meta charset="utf-8">
         <title>Camgian Microsystems</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!-- Le styles -->
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        {% block styles %} {% endblock %}
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script src="../assets/js/html5shiv.js"></script>
-        <![endif]-->
+        {% block styles %}
+        {% endblock %}
     </head>
     <body>
-        <div class="container">{% block content %}{% endblock %}</div>
+        <div class="container">
+          {% block content %}
+          {% endblock %}
+        </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
     </body>
 </html>
 
