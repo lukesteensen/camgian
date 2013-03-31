@@ -8,7 +8,9 @@ app.debug = True
 
 
 def connect_db():
-    return sqlite3.connect("data.db")
+    conn = sqlite3.connect("data.db")
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 @app.before_request
@@ -42,13 +44,13 @@ def logout():
 def locations_index():
     # user = request.cookies.get('user')
     cur = g.db.execute("select * from locations;")
-    locations = [dict(id=row[0], name=row[1]) for row in cur.fetchall()]
+    locations = cur.fetchall()
     return render_template("locations.html", locations=locations)
 
 
 @app.route('/location/<int:id>')
 def location(id):
-    location = locations[id]
+    location = g.db.execute("select * from locations where id = ?;", (id,)).fetchone()
     return render_template('location.html', location=location)
 
 
