@@ -51,7 +51,8 @@ def locations_index():
 @app.route('/location/<int:id>')
 def location(id):
     location = g.db.execute("select * from locations where id = ?;", (id,)).fetchone()
-    return render_template('location.html', location=location)
+    tanks = g.db.execute("select distinct(tank) as name, fluid_type from events where location_id = ?;", (id,)).fetchall()
+    return render_template('location.html', location=location, tanks=tanks)
 
 
 if __name__ == '__main__':

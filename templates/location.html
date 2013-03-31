@@ -8,15 +8,17 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Location ID</th>
-          <th>Name</th>
+          <th>Tank</th>
+          <th>Fluid type</th>
         </tr>
       </thead>
       <tbody>
+        {% for tank in tanks %}
         <tr>
-          <td>{{ location.id }}</td>
-          <td>{{ location.name }}</td>
+          <td>{{ tank.name }}</td>
+          <td>{{ tank.fluid_type }}</td>
         </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
