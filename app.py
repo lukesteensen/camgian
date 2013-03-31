@@ -1,17 +1,27 @@
+import sqlite3
 from os import environ
-from flask import Flask, request, make_response, redirect, render_template, url_for
+from flask import Flask, request, make_response, redirect, render_template, url_for, g
 
 
 app = Flask(__name__)
 app.debug = True
 
-locations = {
-    1: {"name": "Nashville", "id": 1},
-    2: {"name": "Starksville", "id": 2},
-}
+
+def connect_db():
+    return sqlite3.connect("data.db")
 
 
-@app.route('/login', methods=["GET", "POST"])
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+
+@app.teardown_request
+def teardown_request(exception):
+    g.db.close()
+
+
+@app.route('/', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         resp = make_response(redirect(url_for('locations_index')))
@@ -31,7 +41,9 @@ def logout():
 @app.route('/locations')
 def locations_index():
     # user = request.cookies.get('user')
-    return render_template("locations.html", locations=locations.values())
+    cur = g.db.execute("select * from locations;")
+    locations = [dict(id=row[0], name=row[1]) for row in cur.fetchall()]
+    return render_template("locations.html", locations=locations)
 
 
 @app.route('/location/<int:id>')
