@@ -3,8 +3,15 @@
 {% block content %}
 <div class="row">
   <div class="span5 offset2">
-    <h1>Your Locations</h1>
-    <ul>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Locations</a>
+        <ul class="nav">
+          <li><a href="{{ url_for('login') }}">Log Out</a></li>
+        </ul>
+      </div>
+    </div>    
+    <ul class="nav nav-tabs nav-stacked">
       {% for location in locations %}
         <li>
           <a href="{{ url_for('location', id=location.id) }}">{{ location.name }}</a>
@@ -14,4 +21,5 @@
   </div>
 </div>
 {% endblock %}
+
 

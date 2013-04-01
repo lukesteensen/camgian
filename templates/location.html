@@ -3,9 +3,17 @@
 {% block content %}
 <div class="row">
   <div class="span5 offset2">
-    <h1>{{ location.name }}</h1>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">{{ location.name }}</a>
+        <ul class="nav">
+          <li><a href="{{ url_for('locations_index') }}">Other Locations</a></li>
+          <li><a href="{{ url_for('login') }}">Log Out</a></li>
+        </ul>
+      </div>
+    </div>    
     <p>All about this location</p>
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Tank</th>
