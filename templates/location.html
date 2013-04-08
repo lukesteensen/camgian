@@ -2,17 +2,8 @@
 
 {% block content %}
 <div class="row">
-  <div class="span5 offset2">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" href="#">{{ location.name }}</a>
-        <ul class="nav">
-          <li><a href="{{ url_for('locations_index') }}">Other Locations</a></li>
-          <li><a href="{{ url_for('login') }}">Log Out</a></li>
-        </ul>
-      </div>
-    </div>
-    <p>All about this location</p>
+  <div class="span6 offset3">
+    <h3>{{ location.name }}</h3>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -29,8 +20,12 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
+</div>
+<div class="row">
+  <div class="span6 offset3">
     <h4>Tank Levels</h4>
-    <canvas id="chart" width="480" height="300"><canvas/>
+    <canvas id="chart" width="320" height="300"><canvas/>
   </div>
 </div>
 {% endblock %}

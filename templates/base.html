@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Camgian Microsystems</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        {% block styles %}
-        {% endblock %}
-    </head>
-    <body>
+  <head>
+    <meta charset="utf-8">
+    <title>Camgian Microsystems</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px;
+      }
+    </style>
+    {% block styles %}
+    {% endblock %}
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
         <div class="container">
-          {% block content %}
-          {% endblock %}
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Camgian</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="{{ url_for('locations_index') }}">Locations</a></li>
+              <li><a href="{{ url_for('login') }}">Log Out</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
-        <script src="/static/chart.min.js"></script>
-        {% block js %}
-        {% endblock %}
-    </body>
+      </div>
+    </div>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <script src="/static/chart.min.js"></script>
+    {% block js %}
+    {% endblock %}
+  </body>
 </html>
 

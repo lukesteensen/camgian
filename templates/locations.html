@@ -2,24 +2,18 @@
 
 {% block content %}
 <div class="row">
-  <div class="span5 offset2">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" href="#">Locations</a>
-        <ul class="nav">
-          <li><a href="{{ url_for('login') }}">Log Out</a></li>
-        </ul>
-      </div>
-    </div>    
+  <div class="span6 offset3">
     <ul class="nav nav-tabs nav-stacked">
       {% for location in locations %}
-        <li>
-          <a href="{{ url_for('location', id=location.id) }}">{{ location.name }}</a>
-        </li>
+      <li>
+        <a href="{{ url_for('location', id=location.id) }}">
+          {{ location.name }}
+          <span class="label label-success pull-right">OK</span>
+        </a>
+      </li>
       {% endfor %}
     </ul>
   </div>
 </div>
 {% endblock %}
-
 
