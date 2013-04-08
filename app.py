@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from os import environ
 from flask import Flask, request, make_response, redirect, render_template, url_for, g
@@ -52,7 +53,14 @@ def locations_index():
 def location(id):
     location = g.db.execute("select * from locations where id = ?;", (id,)).fetchone()
     tanks = g.db.execute("select distinct(tank) as name, fluid_type from events where location_id = ?;", (id,)).fetchall()
-    return render_template('location.html', location=location, tanks=tanks)
+    chart_data = []
+    # for tank in tanks:
+        # rows = g.db.execute("select level, time from events where tank = ? order by time desc limit 20;", (tank["name"],)).fetchall()
+        # chart_data.append({
+            # "key": tank["name"],
+            # "values": [ {"x": row["time"], "y": row["level"] } for row in rows ],
+        # })
+    return render_template('location.html', location=location, tanks=tanks, chart_data=json.dumps(chart_data))
 
 
 if __name__ == '__main__':
