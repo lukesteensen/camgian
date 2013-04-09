@@ -2,13 +2,15 @@
 
 {% block content %}
 <div class="row">
-  <div class="span5 offset2">
-    <h1>Your Locations</h1>
-    <ul>
+  <div class="span6 offset3">
+    <ul class="nav nav-tabs nav-stacked">
       {% for location in locations %}
-        <li>
-          <a href="{{ url_for('location', id=location.id) }}">{{ location.name }}</a>
-        </li>
+      <li>
+        <a href="{{ url_for('location', id=location.id) }}">
+          {{ location.name }}
+          <span class="label label-success pull-right">OK</span>
+        </a>
+      </li>
       {% endfor %}
     </ul>
   </div>
