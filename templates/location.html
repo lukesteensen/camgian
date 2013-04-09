@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="span5 offset2">
+    <h1>{{ location.name }}</h1>
+    <p>All about this location</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tank</th>
+          <th>Fluid type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tank in tanks %}
+        <tr>
+          <td>{{ tank.name }}</td>
+          <td>{{ tank.fluid_type }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
