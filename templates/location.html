@@ -4,7 +4,7 @@
 <div class="row">
   <div class="span6 offset3">
     <h3>{{ location.name }}</h3>
-    <table class="table table-striped">
+    <table class="table table-striped tanks">
       <thead>
         <tr>
           <th>Tank</th>
@@ -12,7 +12,7 @@
           <th>Status</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="tank-list">
         {% for tank in tanks %}
         <tr>
           <td>{{ tank.name }}</td>
@@ -33,7 +33,7 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <canvas id="chart" width="320" height="300"><canvas/>
+          <canvas id="chart" width="320" height="230"><canvas/>
         </div>
         <div class="tab-pane" id="tab2">
           <p>Howdy, I'm in Section 2.</p>
