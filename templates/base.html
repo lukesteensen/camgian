@@ -14,14 +14,24 @@
         margin-bottom: 2px; 
       }
 
-      ul.nav li a {
+      ul.nav li a.graph-tab {
         padding-top: 2px;
         padding-bottom: 2px;
       }
 
+      ul.nav li a.locations {
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }      
+
       table.tanks {
         margin-bottom: 5px; 
       }
+
+      .location-title {
+        margin: 0;
+      }
+
     </style>
     {% block styles %}
     {% endblock %}
@@ -53,7 +63,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="/static/chart.min.js"></script>
-    {% block js %}
+    {% block js %}           
     {% endblock %}
   </body>
 </html>
