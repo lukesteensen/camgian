@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
   <div class="span6 offset3">
-    <h3>{{ location.name }}</h3>
+    <h3 class="location-title">{{ location.name }}</h3>
     <table class="table table-striped tanks">
       <thead>
         <tr>
@@ -13,10 +13,12 @@
         </tr>
       </thead>
       <tbody class="tank-list">
+        {% set count = 1 %}
         {% for tank in tanks %}
-        <tr>
-          <td>{{ tank.name }}</td>
+        <tr class="table-row" id="row-{{ count }}">
+          <td>{{ tank.name.replace("gallons", "").replace(" 12", " - 12").upper() }}</td>
           <td>{{ tank.fluid_type }}</td>
+          {% set count = count + 1 %}
           <td><span class="label label-success">OK</span></td>
         </tr>
         {% endfor %}
@@ -28,25 +30,66 @@
   <div class="span6 offset3">
     <div class="tabbable">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Tank Levels</a></li>
-        <li><a href="#tab2" data-toggle="tab">Section 2</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab" class="graph-tab">Overview</a></li>
+        <li><a href="#tab2" class="graph-tab" data-toggle="tab">Levels</a></li>
+        <li><a href="#tab3" class="graph-tab" data-toggle="tab">Temp</a></li>
+        <li><a href="#tab4" class="graph-tab" data-toggle="tab">Map</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <canvas id="chart" width="320" height="230"><canvas/>
+          <canvas id="chart1" class="tn" width="300" height="230"></canvas>
+          <canvas id="chart2" class="ms" width="300" height="230" style="display:none"></canvas>            
         </div>
         <div class="tab-pane" id="tab2">
-          <p>Howdy, I'm in Section 2.</p>
+          <table class="tn table table-striped">
+            <tbody>
+              <tr><td>Minimum Level</td><td>20</td></tr>
+              <tr><td>Maximum Level</td><td>20</td></tr>
+              <tr><td>Average Level</td><td>20</td></tr>
+              <tr><td>Low Alarm Level</td><td>20</td></tr>
+              <tr><td>High Alarm Level</td><td>20</td></tr>
+            </tbody>                     
+          </table>
+          <table class="ms table table-striped" style="display:none">
+            <tbody>
+              <tr><td>Minimum Level</td><td>20</td></tr>
+              <tr><td>Maximum Level</td><td>20</td></tr>
+              <tr><td>Average Level</td><td>20</td></tr>
+              <tr><td>Low Alarm Level</td><td>20</td></tr>
+              <tr><td>High Alarm Level</td><td>20</td></tr>
+            </tbody>                     
+          </table>          
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+        <div class="tab-pane" id="tab3">
+          <table class="tn table table-striped">
+            <tbody>
+              <tr><td>Minimum Temp</td><td>20</td></tr>
+              <tr><td>Maximum Temp</td><td>20</td></tr>
+              <tr><td>Average Temp</td><td>20</td></tr>
+            </tbody>                     
+          </table>
+          <table class="ms table table-striped" style="display:none">
+            <tbody>
+              <tr><td>Minimum Temp</td><td>20</td></tr>
+              <tr><td>Maximum Temp</td><td>20</td></tr>
+              <tr><td>Average Temp</td><td>20</td></tr>
+            </tbody>                     
+          </table>          
+        </div>
+
+        <div class="tab-pane" id="tab4">
+          <iframe class="ms" width="300" height="230" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=100+Research+Blvd,+Starkville,+MS&amp;aq=1&amp;oq=100+Research+Blvd,+st&amp;sll=36.166705,-86.783752&amp;sspn=0.708428,1.448822&amp;g=nashville,+tn&amp;ie=UTF8&amp;hq=&amp;hnear=100+Research+Blvd,+Starkville,+Oktibbeha,+Mississippi+39759&amp;t=m&amp;ll=36.456636,-93.164062&amp;spn=16.233915,26.279297&amp;z=4&amp;iwloc=A&amp;output=embed"></iframe>
+
+
+          <iframe class="tn" width="300" style="display:none" height="230" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=nashville,+tn&amp;aq=&amp;sll=36.18664,-86.785245&amp;sspn=0.708248,1.448822&amp;ie=UTF8&amp;hq=&amp;hnear=Nashville,+Davidson,+Tennessee&amp;t=m&amp;ll=44.590467,-110.039062&amp;spn=28.77247,52.558594&amp;z=4&amp;output=embed"></iframe><br />
+        </div>
+
 {% endblock %}
 
 {% block js %}
 <script>
-  var ctx = $("#chart").get(0).getContext("2d");
+  var ctx1 = $("#chart1").get(0).getContext("2d");
   var data = {
     labels : ["January","February","March","April","May","June","July"],
     datasets : [
@@ -66,7 +109,45 @@
     }
     ]
   }
-  new Chart(ctx).Line(data, {animation: false, pointDot: false});
+  new Chart(ctx1).Line(data, {animation: false, pointDot: false});
+
+  var ctx2 = $("#chart2").get(0).getContext("2d");
+  var data = {
+    labels : ["January","February","March","April","May","June","July"],
+    datasets : [
+      {
+      fillColor : "rgba(220,220,220,0.5)",
+      strokeColor : "rgba(220,220,220,1)",
+      pointColor : "rgba(220,220,220,1)",
+      pointStrokeColor : "#fff",
+      data : [85,59,90,81,56,55,40]
+    },
+    {
+      fillColor : "rgba(151,187,205,0.5)",
+      strokeColor : "rgba(151,187,205,1)",
+      pointColor : "rgba(151,187,205,1)",
+      pointStrokeColor : "#fff",
+      data : [28,48,40,19,96,27,100]
+    }
+    ]
+  }
+  new Chart(ctx2).Line(data, {animation: false, pointDot: false});
+
+  $(function () {
+    $(".table-row").click( function() {
+      var row = $(this).attr("id");
+      if (row=='row-1') {
+        $(".ms").fadeOut(200, function() {
+          $(".tn").fadeIn(200);
+        }); 
+        
+      } else {
+        $(".tn").fadeOut(200, function() {
+          $(".ms").fadeIn(200);    
+        }); 
+      }
+    });
+  });
 </script>
 {% endblock %}
 
