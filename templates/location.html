@@ -37,8 +37,7 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <canvas id="chart1" class="tn" width="300" height="230"></canvas>
-          <canvas id="chart2" class="ms" width="300" height="230" style="display:none"></canvas>            
+          <div id="chart" style="width:300px; height:230px;"></div>
         </div>
         <div class="tab-pane" id="tab2">
           <table class="tn table table-striped">
@@ -48,7 +47,7 @@
               <tr><td>Average Level</td><td>20</td></tr>
               <tr><td>Low Alarm Level</td><td>20</td></tr>
               <tr><td>High Alarm Level</td><td>20</td></tr>
-            </tbody>                     
+            </tbody>
           </table>
           <table class="ms table table-striped" style="display:none">
             <tbody>
@@ -57,8 +56,8 @@
               <tr><td>Average Level</td><td>20</td></tr>
               <tr><td>Low Alarm Level</td><td>20</td></tr>
               <tr><td>High Alarm Level</td><td>20</td></tr>
-            </tbody>                     
-          </table>          
+            </tbody>
+          </table>
         </div>
 
         <div class="tab-pane" id="tab3">
@@ -67,84 +66,56 @@
               <tr><td>Minimum Temp</td><td>20</td></tr>
               <tr><td>Maximum Temp</td><td>20</td></tr>
               <tr><td>Average Temp</td><td>20</td></tr>
-            </tbody>                     
+            </tbody>
           </table>
           <table class="ms table table-striped" style="display:none">
             <tbody>
               <tr><td>Minimum Temp</td><td>20</td></tr>
               <tr><td>Maximum Temp</td><td>20</td></tr>
               <tr><td>Average Temp</td><td>20</td></tr>
-            </tbody>                     
-          </table>          
+            </tbody>
+          </table>
         </div>
 
         <div class="tab-pane" id="tab4">
-          <iframe class="ms" width="300" height="230" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=100+Research+Blvd,+Starkville,+MS&amp;aq=1&amp;oq=100+Research+Blvd,+st&amp;sll=36.166705,-86.783752&amp;sspn=0.708428,1.448822&amp;g=nashville,+tn&amp;ie=UTF8&amp;hq=&amp;hnear=100+Research+Blvd,+Starkville,+Oktibbeha,+Mississippi+39759&amp;t=m&amp;ll=36.456636,-93.164062&amp;spn=16.233915,26.279297&amp;z=4&amp;iwloc=A&amp;output=embed"></iframe>
-
-
-          <iframe class="tn" width="300" style="display:none" height="230" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=nashville,+tn&amp;aq=&amp;sll=36.18664,-86.785245&amp;sspn=0.708248,1.448822&amp;ie=UTF8&amp;hq=&amp;hnear=Nashville,+Davidson,+Tennessee&amp;t=m&amp;ll=44.590467,-110.039062&amp;spn=28.77247,52.558594&amp;z=4&amp;output=embed"></iframe><br />
         </div>
 
 {% endblock %}
 
 {% block js %}
+<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
-  var ctx1 = $("#chart1").get(0).getContext("2d");
-  var data = {
-    labels : ["January","February","March","April","May","June","July"],
-    datasets : [
-      {
-      fillColor : "rgba(220,220,220,0.5)",
-      strokeColor : "rgba(220,220,220,1)",
-      pointColor : "rgba(220,220,220,1)",
-      pointStrokeColor : "#fff",
-      data : [65,59,90,81,56,55,40]
-    },
-    {
-      fillColor : "rgba(151,187,205,0.5)",
-      strokeColor : "rgba(151,187,205,1)",
-      pointColor : "rgba(151,187,205,1)",
-      pointStrokeColor : "#fff",
-      data : [28,48,40,19,96,27,100]
-    }
-    ]
-  }
-  new Chart(ctx1).Line(data, {animation: false, pointDot: false});
-
-  var ctx2 = $("#chart2").get(0).getContext("2d");
-  var data = {
-    labels : ["January","February","March","April","May","June","July"],
-    datasets : [
-      {
-      fillColor : "rgba(220,220,220,0.5)",
-      strokeColor : "rgba(220,220,220,1)",
-      pointColor : "rgba(220,220,220,1)",
-      pointStrokeColor : "#fff",
-      data : [85,59,90,81,56,55,40]
-    },
-    {
-      fillColor : "rgba(151,187,205,0.5)",
-      strokeColor : "rgba(151,187,205,1)",
-      pointColor : "rgba(151,187,205,1)",
-      pointStrokeColor : "#fff",
-      data : [28,48,40,19,96,27,100]
-    }
-    ]
-  }
-  new Chart(ctx2).Line(data, {animation: false, pointDot: false});
-
   $(function () {
+    var data = {{ chart_data|safe }};
+
+    var plot = $.plot("#chart", [
+      { data: data["level"]["data"], label: "Level (gal)", color: "#607120" },
+      { data: data["temp"]["data"], label: "Temp (F)", yaxis: 2, color: "#bbbbbb" },
+    ], {
+      xaxes: [{ mode: "time" }],
+      yaxes: [
+        { min: 0 },
+        { alignTicksWithAxis: 1, position: "right" }
+      ],
+      legend: { position: "sw" },
+      grid: {
+        markings: [
+          { yaxis: { from: 150, to: 150 }, color: "#bb0000" },
+        ]
+      }
+    });
+
     $(".table-row").click( function() {
       var row = $(this).attr("id");
       if (row=='row-1') {
         $(".ms").fadeOut(200, function() {
           $(".tn").fadeIn(200);
-        }); 
-        
+        });
+
       } else {
         $(".tn").fadeOut(200, function() {
-          $(".ms").fadeIn(200);    
-        }); 
+          $(".ms").fadeIn(200);
+        });
       }
     });
   });
