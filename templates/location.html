@@ -78,12 +78,16 @@
         </div>
 
         <div class="tab-pane" id="tab4">
+          {% if location.name == "Nashville" %}
+            <img src="http://maps.googleapis.com/maps/api/staticmap?center=2412+Kensington+Pl,Nashville,TN&zoom=11&size=300x230&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C36.147509,-86.806669&sensor=false" />
+          {% else %}
+            <img src="http://maps.googleapis.com/maps/api/staticmap?center=Camgian+Microsystems,Research+Boulevard,Starkville,MS&zoom=11&size=300x230&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C33.471061,-88.789680&sensor=false" />
+          {% endif %}
         </div>
 
 {% endblock %}
 
 {% block js %}
-<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
   $(function () {
     var data = {{ chart_data|safe }};
