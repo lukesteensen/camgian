@@ -10,9 +10,9 @@ def get_data(series):
     data = [[int(x[0]), x[1]] for x in zip(series.index.tolist(), series.values)]
     return {
         'data': data,
-        'min': series.min(),
-        'max': series.max(),
-        'avg': series.mean(),
+        'min': int(series.min()),
+        'max': int(series.max()),
+        'avg': int(series.mean()),
     }
 
 def level_data():

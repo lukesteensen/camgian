@@ -75,6 +75,10 @@
 <script>
   var data = {{ chart_data|safe }};
 
+  function degreeFormatter(v, axis) {
+    return v + "°";
+  }
+
   var show_tank = function(tank) {
     var plot = $.plot("#chart", [
       { data: data[tank]["level"]["data"], label: "Level (gal)", color: "#607120" },
@@ -83,7 +87,7 @@
       xaxes: [{ mode: "time" }],
       yaxes: [
         { min: 0 },
-        { alignTicksWithAxis: 1, position: "right" }
+        { alignTicksWithAxis: 1, position: "right", tickFormatter: degreeFormatter }
       ],
       legend: { position: "sw" },
       grid: {
@@ -93,7 +97,13 @@
         ]
       }
     });
-    // fill out tables
+
+    $("td[data-field=min_level]").html(data[tank]["level"]["min"]);
+    $("td[data-field=max_level]").html(data[tank]["level"]["max"]);
+    $("td[data-field=avg_level]").html(data[tank]["level"]["avg"]);
+    $("td[data-field=min_temp]").html(data[tank]["temp"]["min"]);
+    $("td[data-field=max_temp]").html(data[tank]["temp"]["max"]);
+    $("td[data-field=avg_temp]").html(data[tank]["temp"]["avg"]);
   }
 
   $(function () {
