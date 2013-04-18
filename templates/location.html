@@ -76,7 +76,7 @@
   var data = {{ chart_data|safe }};
 
   function degreeFormatter(v, axis) {
-    return v + "°";
+    return v.toFixed(axis.tickDecimals) + "°";
   }
 
   var show_tank = function(tank) {
