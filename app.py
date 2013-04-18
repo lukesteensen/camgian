@@ -3,7 +3,7 @@ import sqlite3
 from os import environ
 from flask import Flask, request, make_response, redirect, render_template, url_for, g
 
-from data import fake_series
+from data import level_data, temp_data
 
 
 app = Flask(__name__)
@@ -55,14 +55,7 @@ def locations_index():
 def location(id):
     location = g.db.execute("select * from locations where id = ?;", (id,)).fetchone()
     tanks = g.db.execute("select distinct(tank) as name, fluid_type from events where location_id = ?;", (id,)).fetchall()
-    chart_data = {
-        'level': {
-            'data': fake_series(),
-        },
-        'temp': {
-            'data': fake_series(),
-        },
-    }
+    chart_data = { tank['name']: { 'level': level_data(), 'temp': temp_data() } for tank in tanks }
     chart_data_json = json.dumps(chart_data)
     return render_template('location.html', location=location, tanks=tanks, chart_data=chart_data_json)
 

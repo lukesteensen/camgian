@@ -13,12 +13,10 @@
         </tr>
       </thead>
       <tbody class="tank-list">
-        {% set count = 1 %}
         {% for tank in tanks %}
-        <tr class="table-row" id="row-{{ count }}">
-          <td>{{ tank.name.replace("gallons", "").replace(" 12", " - 12").upper() }}</td>
+        <tr class="table-row" data-tank="{{ tank.name }}">
+          <td>{{ tank.name }}</td>
           <td>{{ tank.fluid_type }}</td>
-          {% set count = count + 1 %}
           <td><span class="label label-success">OK</span></td>
         </tr>
         {% endfor %}
@@ -36,43 +34,29 @@
         <li><a href="#tab4" class="graph-tab" data-toggle="tab">Map</a></li>
       </ul>
       <div class="tab-content">
+
         <div class="tab-pane active" id="tab1">
           <div id="chart" style="width:300px; height:230px;"></div>
         </div>
+
         <div class="tab-pane" id="tab2">
-          <table class="tn table table-striped">
+          <table class="table table-striped">
             <tbody>
-              <tr><td>Minimum Level</td><td>20</td></tr>
-              <tr><td>Maximum Level</td><td>20</td></tr>
-              <tr><td>Average Level</td><td>20</td></tr>
-              <tr><td>Low Alarm Level</td><td>20</td></tr>
-              <tr><td>High Alarm Level</td><td>20</td></tr>
-            </tbody>
-          </table>
-          <table class="ms table table-striped" style="display:none">
-            <tbody>
-              <tr><td>Minimum Level</td><td>20</td></tr>
-              <tr><td>Maximum Level</td><td>20</td></tr>
-              <tr><td>Average Level</td><td>20</td></tr>
-              <tr><td>Low Alarm Level</td><td>20</td></tr>
-              <tr><td>High Alarm Level</td><td>20</td></tr>
+              <tr><td>Minimum Level</td><td data-field="min_level"></td></tr>
+              <tr><td>Maximum Level</td><td data-field="max_level"></td></tr>
+              <tr><td>Average Level</td><td data-field="avg_level"></td></tr>
+              <tr><td>Low Alarm Level</td><td data-field="low_alarm"></td></tr>
+              <tr><td>High Alarm Level</td><td data-field="high_alarm"></td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="tab-pane" id="tab3">
-          <table class="tn table table-striped">
+          <table class="table table-striped">
             <tbody>
-              <tr><td>Minimum Temp</td><td>20</td></tr>
-              <tr><td>Maximum Temp</td><td>20</td></tr>
-              <tr><td>Average Temp</td><td>20</td></tr>
-            </tbody>
-          </table>
-          <table class="ms table table-striped" style="display:none">
-            <tbody>
-              <tr><td>Minimum Temp</td><td>20</td></tr>
-              <tr><td>Maximum Temp</td><td>20</td></tr>
-              <tr><td>Average Temp</td><td>20</td></tr>
+              <tr><td>Minimum Temp</td><td data-field="min_temp"></td></tr>
+              <tr><td>Maximum Temp</td><td data-field="max_temp"></td></tr>
+              <tr><td>Average Temp</td><td data-field="avg_temp"></td></tr>
             </tbody>
           </table>
         </div>
@@ -89,12 +73,12 @@
 
 {% block js %}
 <script>
-  $(function () {
-    var data = {{ chart_data|safe }};
+  var data = {{ chart_data|safe }};
 
+  var show_tank = function(tank) {
     var plot = $.plot("#chart", [
-      { data: data["level"]["data"], label: "Level (gal)", color: "#607120" },
-      { data: data["temp"]["data"], label: "Temp (F)", yaxis: 2, color: "#bbbbbb" },
+      { data: data[tank]["level"]["data"], label: "Level (gal)", color: "#607120" },
+      { data: data[tank]["temp"]["data"], label: "Temp (F)", yaxis: 2, color: "#bbbbbb" },
     ], {
       xaxes: [{ mode: "time" }],
       yaxes: [
@@ -104,10 +88,16 @@
       legend: { position: "sw" },
       grid: {
         markings: [
-          { yaxis: { from: 150, to: 150 }, color: "#bb0000" },
+          { yaxis: { from: data[tank]["level"]["low_alarm"], to: data[tank]["level"]["low_alarm"] }, color: "#bb0000" },
+          { yaxis: { from: data[tank]["level"]["high_alarm"], to: data[tank]["level"]["high_alarm"] }, color: "#bb0000" },
         ]
       }
     });
+    // fill out tables
+  }
+
+  $(function () {
+    show_tank($(".table-row:first").data("tank"));
 
     $(".table-row").click( function() {
       var row = $(this).attr("id");
