@@ -104,23 +104,16 @@
     $("td[data-field=min_temp]").html(data[tank]["temp"]["min"]);
     $("td[data-field=max_temp]").html(data[tank]["temp"]["max"]);
     $("td[data-field=avg_temp]").html(data[tank]["temp"]["avg"]);
+    $("td[data-field=high_alarm]").html(data[tank]["level"]["high_alarm"]);
+    $("td[data-field=low_alarm]").html(data[tank]["level"]["low_alarm"]);
   }
 
   $(function () {
     show_tank($(".table-row:first").data("tank"));
 
     $(".table-row").click( function() {
-      var row = $(this).attr("id");
-      if (row=='row-1') {
-        $(".ms").fadeOut(200, function() {
-          $(".tn").fadeIn(200);
-        });
-
-      } else {
-        $(".tn").fadeOut(200, function() {
-          $(".ms").fadeIn(200);
-        });
-      }
+      var tank = $(this).data("tank");
+      show_tank(tank);
     });
   });
 </script>
