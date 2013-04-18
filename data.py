@@ -4,7 +4,7 @@ import pandas as pd
 rng = pd.date_range('10/1/2012', '4/19/2013', freq='3D').astype(np.int64) // 10**6
 
 def ts():
-    return pd.ewma(pd.Series(np.random.randn(len(rng)), index=rng), span=20)
+    return pd.ewma(pd.Series(np.random.randn(len(rng)), index=rng), span=20)[10:]
 
 def get_data(series):
     data = [[int(x[0]), x[1]] for x in zip(series.index.tolist(), series.values)]
