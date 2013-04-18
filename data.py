@@ -16,15 +16,15 @@ def get_data(series):
     }
 
 def level_data():
-    series = ts() * 500 + 500
-    series = series.clip(0, 800)
+    series = ts() * 8000 + 7000
+    series = series.clip(0, 12600)
     data = get_data(series)
-    data['low_alarm'] = int(series.max() * 0.70)
-    data['high_alarm'] = int(series.max() * 0.30)
+    data['low_alarm'] = int(12600 * 0.70)
+    data['high_alarm'] = int(12600 * 0.30)
     return data
 
 def temp_data():
-    series = ts() * 50 + 50
+    series = ts() * 40 + 60
     series = series.clip(0, 800)
     return get_data(series)
 
